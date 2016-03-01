@@ -69,6 +69,7 @@ let g:delimitMate_autoclose = 1         " when adding { it adds } automatically
 
 " ## SYNTASTIC
 " doesn't work? Check why with :SyntasticInfo
+let g:syntastic_debug = 1 				" Let you debug if scss-lint is loaded	
 let g:syntastic_scss_checkers = ['scss_lint']
 " let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_check_on_open = 1
