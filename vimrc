@@ -28,10 +28,12 @@ Plugin 'gorodinskiy/vim-coloresque'     " highlights colors #hex, rgb() etc.
 Plugin 'scrooloose/syntastic'           " syntax checker
 Plugin 'bling/vim-airline'				" status bar
 Plugin 'terryma/vim-multiple-cursors'   " multiple cursor support
-Plugin 'Valloric/YouCompleteMe'			" autoComplete
+"Plugin 'Valloric/YouCompleteMe'			" autoComplete
 "if i like autoComplete -> add UltiSnips
-Plugin 'SirVer/ultisnips'
-Plugin 'vim-scripts/indenthtml'     " HTML identing
+"Plugin 'SirVer/ultisnips'
+"Plugin 'vim-scripts/indenthtml' " HTML identing
+Plugin 'scrooloose/nerdtree'    " NerdTree (file system visualisation)
+
 
 call vundle#end()
 filetype plugin indent on " Required
@@ -42,8 +44,19 @@ set number      						" line numbers
 set shiftwidth=4		
 set tabstop=4       					" default 8
 set wildmenu 							"TEST: visually autocomplete the command menu"
-set breakindent 						" Make word wrapping behave like it does in every other sane text editor"
+" set breakindent 						" Make word wrapping behave like it does in every other sane text editor"
+set nowrap
 set autoindent 							" always set autoindenting on"
+
+set noswapfile                          " create no swp files
+set nobackup
+
+set splitbelow                          " puts new splits to the bottom
+set splitright                          " ensures new splits are to the right of current
+
+set scrolloff=5 " set scroll context
+set hlsearch " Highlight search results
+set incsearch " Make search jump:
 
 " # SETTING MODULES
 " <missing description>
@@ -56,6 +69,16 @@ set background=dark
 " colorscheme predawn
 " colorscheme vwilight
 colorscheme monokai " atleast works
+
+" ## Split window
+noremap <Leader>h :split<CR>
+noremap <Leader>v :vsplit<CR>
+
+noremap <C-J> <C-W><C-J> " navigate to bottom split 	
+noremap <C-K> <C-W><C-K> " navigate to top split
+noremap <C-L> <C-W><C-L> " navigate to right split
+noremap <C-H> <C-W><C-H> " navigate to left split
+
 
 
 " ## EMMET
@@ -88,6 +111,27 @@ let g:syntastic_warning_symbol='!'
 let g:syntastic_style_error_symbol = '✗'
 let g:syntastic_style_warning_symbol = '!'
 
+" vim tries to find .scss-lint.yml file from current location
+" not the root where .scss-lint.yml is stored. This solves the issue
+" https://github.com/scrooloose/syntastic/issues/1373
+fun! SetScssConfig()
+    let scssConfig = findfile('.scss-lint.yml', '.;')
+    if scssConfig != ''
+        let b:syntastic_scss_scss_lint_args = '--config ' . scssConfig
+    endif
+endf
+
+" autocommands
+if !exists("autocommands_loaded")
+    let autocommands_loaded = 1
+	" reload .vimrc automatically
+    autocmd BufWritePost  .vimrc         source %
+    autocmd BufWritePost  vimrc.dotfile  source %
+	" different changes
+	autocmd FileType scss :call SetScssConfig()
+endif
+
+
 " ## STATUS BAR - AIRLINE
 set laststatus=2 						" Enable the status bar to always show"
 let g:airline_powerline_fonts = 1
@@ -117,12 +161,12 @@ match RedundantSpaces /\s\+$/
 " ## VIM MULTIPLE CURSORS
 
 let g:multi_cursor_exit_from_insert_mode = 0   "To not loose all existing cursors when pressing <ESC> 
-
+let g:multi_cursor_start_key='<C-d>'
 " ## ULTISNIPS
 
 " CONFLICT with some plugins like tpope/Endwise
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-imap <expr><CR> pumvisible() ? "\<C-n>" : "<Plug>delimitMateCR"
+"	inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"	imap <expr><CR> pumvisible() ? "\<C-n>" : "<Plug>delimitMateCR"
 " Finally, trigger configuration. Do not use <tab> if you use
 " https://github.com/Valloric/YouCompleteMe.
 
@@ -134,3 +178,8 @@ let g:ycm_seed_identifiers_with_syntax = 1
 " let g:ycm_key_invoke_completion = '<C-Space>'
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
+
+" ## NERDTREE
+map <C-n> :NERDTreeToggle<CR> " Enable Nerdtree with CTRL + N
+
+
