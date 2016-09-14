@@ -19,44 +19,59 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'           " required for vundle ;)
-Plugin 'jaywilliams/vim-vwilight'       " theme colors
 Plugin 'mattn/emmet-vim'                " emmet
 Plugin 'tpope/vim-commentary'           " comment with shortcuts
 Plugin 'Raimondi/delimitMate'           " automatically create end brackets
 Plugin 'cakebaker/scss-syntax.vim'      " adds support for nested styles
-Plugin 'gorodinskiy/vim-coloresque'     " highlights colors #hex, rgb() etc.
 Plugin 'scrooloose/syntastic'           " syntax checker
 Plugin 'bling/vim-airline'				" status bar
 Plugin 'terryma/vim-multiple-cursors'   " multiple cursor support
-"Plugin 'Valloric/YouCompleteMe'			" autoComplete
-"if i like autoComplete -> add UltiSnips
-"Plugin 'SirVer/ultisnips'
-"Plugin 'vim-scripts/indenthtml' " HTML identing
-Plugin 'scrooloose/nerdtree'    " NerdTree (file system visualisation)
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'scrooloose/nerdtree'          " NerdTree (file system visualisation)
 
+" colors & hihlighting
+Plugin 'nelsyeung/twig.vim'
+Plugin 'jaywilliams/vim-vwilight'       " theme colors
+Plugin 'gorodinskiy/vim-coloresque'     " highlights colors #hex, rgb() etc.
 
 call vundle#end()
 filetype plugin indent on " Required
 
-" # STANDARD VIM SETTINGS
+" General settings
+" =====================
 set title
-set number      						" line numbers
-set shiftwidth=4		
-set tabstop=4       					" default 8
-set wildmenu 							"TEST: visually autocomplete the command menu"
-" set breakindent 						" Make word wrapping behave like it does in every other sane text editor"
+set noswapfile                          " no .swp files
+set nobackup
 set nowrap
 set autoindent 							" always set autoindenting on"
+"set number      						" line numbers
+set scrolloff=5 " set scroll context
 
-set noswapfile                          " create no swp files
-set nobackup
+" Tabs
+" ----
+" Special settings for HTML/CSS related files
+autocmd FileType html,css,scss,tt,tt2,twig :set shiftwidth=4 tabstop=4
+autocmd FileType html,css,scss,tt,tt2,twig :imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+" General Tabbing settings
+set shiftwidth=2		
+set tabstop=2       					" tell vim how many columns a tab counts for
 
-set splitbelow                          " puts new splits to the bottom
+" Search
+" ------
+set hlsearch  " Highlight search results
+set incsearch " Make search jump:
+
+" Split Window
+" ------------
+set splitbelow                         " puts new splits to the bottom
 set splitright                          " ensures new splits are to the right of current
 
-set scrolloff=5 " set scroll context
-set hlsearch " Highlight search results
-set incsearch " Make search jump:
+" Autocomplete
+" ------------
+set wildmenu 							"TEST: visually autocomplete the command menu"
+" set breakindent 						" Make word wrapping behave like it does in every other sane text editor
+
+
 
 " # SETTING MODULES
 " <missing description>
@@ -66,9 +81,9 @@ set incsearch " Make search jump:
 set t_Co=256        " force terminal use 256 colors
 syntax enable       " switches on syntax highlighting
 set background=dark
-" colorscheme predawn
+colorscheme predawn
 " colorscheme vwilight
-colorscheme monokai " atleast works
+" colorscheme monokai " atleast works
 
 " ## Split window
 noremap <Leader>h :split<CR>
@@ -85,13 +100,12 @@ noremap <C-H> <C-W><C-H> " navigate to left split
 
 " disable emmet in all modes
 let g:user_emmet_install_global = 0
-
 let g:user_emmet_expandabbr_key = '<Tab>'
-imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+"imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 "use emmetExpandSmart way (so we can use tab to ident as well)
-let g:use_emmet_complete_tag = 1
+let g:user_emmet_complete_tag = 1
 
-autocmd FileType html,css,scss,php,tt,tt2 EmmetInstall
+autocmd FileType html,css,scss,php,tt,tt2,twig EmmetInstall
 " enable emmet only on specified types
 
 " ## DELIMIT MATE
@@ -102,7 +116,8 @@ let g:delimitMate_autoclose = 1         " when adding { it adds } automatically
 
 " ## SYNTASTIC
 " doesn't work? Check why with :SyntasticInfo
-"let g:syntastic_debug = 1 				" Let you debug if scss-lint is loaded	
+"let g:syntastic_debug = 1 				" Let you debug if scss-lint is loaded
+" TODO: double check if this WORKS
 let g:syntastic_scss_checkers = ['scss_lint']
 " let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_check_on_open = 1
@@ -162,24 +177,9 @@ match RedundantSpaces /\s\+$/
 
 let g:multi_cursor_exit_from_insert_mode = 0   "To not loose all existing cursors when pressing <ESC> 
 let g:multi_cursor_start_key='<C-d>'
-" ## ULTISNIPS
-
-" CONFLICT with some plugins like tpope/Endwise
-"	inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-"	imap <expr><CR> pumvisible() ? "\<C-n>" : "<Plug>delimitMateCR"
-" Finally, trigger configuration. Do not use <tab> if you use
-" https://github.com/Valloric/YouCompleteMe.
-
-let g:UltiSnipsExpandTrigger="<C-C>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_seed_identifiers_with_syntax = 1
-" let g:ycm_key_invoke_completion = '<C-Space>'
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
 
 " ## NERDTREE
 map <C-n> :NERDTreeToggle<CR> " Enable Nerdtree with CTRL + N
 
-
+" git-vim-automatically-wrap-long-commit-messages
+au FileType gitcommit setlocal tw=72
