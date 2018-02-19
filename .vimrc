@@ -24,10 +24,9 @@ Plugin 'tpope/vim-commentary'           " comment with shortcuts
 Plugin 'Raimondi/delimitMate'           " automatically create end brackets
 Plugin 'cakebaker/scss-syntax.vim'      " adds support for nested styles
 Plugin 'scrooloose/syntastic'           " syntax checker
-Plugin 'bling/vim-airline'				" status bar
-Plugin 'terryma/vim-multiple-cursors'   " multiple cursor support
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'scrooloose/nerdtree'          " NerdTree (file system visualisation)
+Plugin 'bling/vim-airline'              " status bar
+Plugin 'ctrlpvim/ctrlp.vim'             " Ctrl+P search feature
+Plugin 'scrooloose/nerdtree'            " NerdTree (file system visualisation)
 
 " colors & hihlighting
 Plugin 'nelsyeung/twig.vim'
@@ -35,7 +34,7 @@ Plugin 'jaywilliams/vim-vwilight'       " theme colors
 Plugin 'gorodinskiy/vim-coloresque'     " highlights colors #hex, rgb() etc.
 
 call vundle#end()
-filetype plugin indent on " Required
+filetype plugin indent on               " Required
 
 " General settings
 " =====================
@@ -43,8 +42,6 @@ set title
 set noswapfile                          " no .swp files
 set nobackup
 set nowrap
-set autoindent 							" always set autoindenting on"
-"set number      						" line numbers
 set scrolloff=5 " set scroll context
 
 " Tabs
@@ -53,22 +50,22 @@ set scrolloff=5 " set scroll context
 autocmd FileType html,css,scss,tt,tt2,twig :set shiftwidth=4 tabstop=4
 autocmd FileType html,css,scss,tt,tt2,twig :imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 " General Tabbing settings
-set shiftwidth=2		
-set tabstop=2       					" tell vim how many columns a tab counts for
-
+set expandtab     											" on tab insert spaces
+set tabstop=2     											" how many spaces
+set shiftwidth=2  											" if :retab, tab will be X spaces
 " Search
 " ------
-set hlsearch  " Highlight search results
-set incsearch " Make search jump:
+set hlsearch  													" Highlight search results
+set incsearch 													" Make search jump
 
 " Split Window
 " ------------
 set splitbelow                         " puts new splits to the bottom
-set splitright                          " ensures new splits are to the right of current
+set splitright                         " ensures new splits are to the right of current
 
 " Autocomplete
 " ------------
-set wildmenu 							"TEST: visually autocomplete the command menu"
+set wildmenu 														"TEST: visually autocomplete the command menu"
 " set breakindent 						" Make word wrapping behave like it does in every other sane text editor
 
 
@@ -101,12 +98,10 @@ noremap <C-H> <C-W><C-H> " navigate to left split
 " disable emmet in all modes
 let g:user_emmet_install_global = 0
 let g:user_emmet_expandabbr_key = '<Tab>'
-"imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
-"use emmetExpandSmart way (so we can use tab to ident as well)
 let g:user_emmet_complete_tag = 1
 
-autocmd FileType html,css,scss,php,tt,tt2,twig EmmetInstall
 " enable emmet only on specified types
+autocmd FileType html,css,scss,php,tt,tt2,twig EmmetInstall
 
 " ## DELIMIT MATE
 " provides automatic closing of quotes, parenthesis, brackets
@@ -117,9 +112,7 @@ let g:delimitMate_autoclose = 1         " when adding { it adds } automatically
 " ## SYNTASTIC
 " doesn't work? Check why with :SyntasticInfo
 "let g:syntastic_debug = 1 				" Let you debug if scss-lint is loaded
-" TODO: double check if this WORKS
 let g:syntastic_scss_checkers = ['scss_lint']
-" let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_check_on_open = 1
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='!'
@@ -161,22 +154,9 @@ let g:airline_detect_modified=1
 let g:airline#extensions#bufferline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 
-" ## YouCompleteMe (pretty heavy lib for autocomplete)
-
-" let g:ycm_collect_identifiers_from_comments_and_strings = 1
-" let g:ycm_seed_identifiers_with_syntax = 1
-" let g:ycm_key_invoke_completion = '<C-Space>'
-
-" ## Highlight redundant whitespaces and tabs.
-" Only shows trailing whitespace :)
-
+" ## Only shows trailing whitespace :)
 highlight RedundantSpaces ctermbg=red
 match RedundantSpaces /\s\+$/
-
-" ## VIM MULTIPLE CURSORS
-
-let g:multi_cursor_exit_from_insert_mode = 0   "To not loose all existing cursors when pressing <ESC> 
-let g:multi_cursor_start_key='<C-d>'
 
 " ## NERDTREE
 map <C-n> :NERDTreeToggle<CR> " Enable Nerdtree with CTRL + N
