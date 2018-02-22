@@ -12,6 +12,15 @@ Then you need to put a `.vimrc` file in your home folder. I prefer to do symlink
 git clone https://github.com/karlisup/vimrc.git ~/dotfiles/vimrc
 ln -s ~/dotfiles/vimrc/.vimrc ~/.vimrc
 ```
+
+Install Vundle plugins.
+```
+vim
+:PluginInstall
+```
+
+And it's done! ✨ 
+
 ## Description
 VIM configuration. It feels like working with Sublime Text editor, but better.
 Just some functionality I applied to VIM:
